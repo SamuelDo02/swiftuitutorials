@@ -5,14 +5,15 @@ struct GlowBorder: ViewModifier {
     var lineWidth: Int
     
     func body(content: Content) -> some View {
-        applyShadow(content: AnyView(content), lineWidth: lineWidth)
+        applyShadow(content: content, lineWidth: lineWidth)
     }
     
-    func applyShadow(content: AnyView, lineWidth: Int) -> AnyView {
+    @ViewBuilder
+    func applyShadow<Content: View>(content: Content, lineWidth: Int) -> some View {
         if lineWidth == 0 {
-            return content
+            content
         } else {
-            return applyShadow(content: AnyView(content.shadow(color: color, radius: 1)), lineWidth: lineWidth - 1)
+            applyShadow(content: content.shadow(color: color, radius: 1), lineWidth: lineWidth - 1)
         }
     }
 }
